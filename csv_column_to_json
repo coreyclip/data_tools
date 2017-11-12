@@ -1,0 +1,39 @@
+
+def csv_column_to_json(file, column):
+    """
+    function: 
+        Given a column in a csv file as input, returns contents of that column
+        in a neat and tidy JSON string. 
+    
+    Parameters
+    ----------
+    file: filepath for the csv file user is loading from 
+    column: column of file user is querying
+    
+    returns
+    ----------
+    json string: contents of column in json string format
+    
+    """
+    import csv
+    import json
+    from collections import defaultdict
+    
+    columns = defaultdict(list) # each value in each column is appended to a list
+    
+    with open(filepath, 'rU') as csvfile:
+        dialect = csv.Sniffer().sniff(csvfile.read(1024))
+        csvfile.seek(0)
+        reader = csv.DictReader(csvfile)
+        for row in reader: # read a row as {column1: value1, column2: value2,...}
+            for (k,v) in row.items(): # go over each column name and value
+                    columns[k].append(v) # append the value into the appropriate list
+                                         # based on column name k
+    
+    cleaned_columns = defaultdict(list)        
+    for k in columns:
+        cleaned_columns[k] = filter(lambda x: x is not '', columns[k])
+    
+    return json.dumps(cleaned_columns['Big data analytics'])
+    
+ 
